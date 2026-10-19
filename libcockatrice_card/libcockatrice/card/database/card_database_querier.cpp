@@ -279,29 +279,6 @@ PrintingInfo CardDatabaseQuerier::getPreferredPrinting(const CardInfoPtr &cardIn
         return getSpecificPrinting({cardInfo->getName(), pinnedPrintingProviderId});
     }
 
-    SetToPrintingsMap setMap = cardInfo->getSets();
-    if (setMap.empty()) {
-        return PrintingInfo(nullptr);
-    }
-
-    CardSetPtr preferredSet = nullptr;
-    PrintingInfo preferredPrinting;
-    SetPriorityComparator comparator;
-
-    for (const auto &printings : setMap) {
-        for (auto &printing : printings) {
-            CardSetPtr currentSet = printing.getSet();
-            if (!preferredSet || comparator(currentSet, preferredSet)) {
-                preferredSet = currentSet;
-                preferredPrinting = printing;
-            }
-        }
-    }
-
-    if (preferredSet) {
-        return preferredPrinting;
-    }
-
     return PrintingInfo(nullptr);
 }
 
